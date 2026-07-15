@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>患者详情 - 智能病历检索系统</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🏥 智能病历检索系统</h1>
+            <nav class="header-nav">
+                <a href="/">首页</a>
+                <a href="/patient.html">患者查询</a>
+                <a href="/summary.html">生成摘要</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>正在加载患者信息...</p>
+        </div>
+
+        <!-- Error -->
+        <div class="alert alert-error hidden" id="errorAlert"></div>
+
+        <!-- Patient Content -->
+        <div id="patientContent" class="hidden">
+            <!-- Patient Header -->
+            <div class="patient-header" id="patientHeader">
+                <div class="patient-name" id="patientName">加载中...</div>
+                <div class="patient-meta" id="patientMeta"></div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" data-tab="timeline">📅 时间轴</button>
+                <button class="tab" data-tab="records">📋 就诊记录</button>
+                <button class="tab" data-tab="entities">🏷️ 关键实体</button>
+                <button class="tab" data-tab="summary">📝 摘要</button>
+            </div>
+
+            <!-- Timeline Tab -->
+            <div class="tab-content active" id="tab-timeline">
+                <div class="timeline" id="timelineContent"></div>
+            </div>
+
+            <!-- Records Tab -->
+            <div class="tab-content" id="tab-records">
+                <div id="recordsContent"></div>
+            </div>
+
+            <!-- Entities Tab -->
+            <div class="tab-content" id="tab-entities">
+                <div class="grid-2" id="entitiesContent"></div>
+            </div>
+
+            <!-- Summary Tab -->
+            <div class="tab-content" id="tab-summary">
+                <div id="summaryContent"></div>
+                <button class="btn btn-primary mt-2" id="generateSummaryBtn">生成新的摘要</button>
+            </div>
+        </div>
+
+        <!-- Search Form -->
+        <section class="card mt-3">
+            <div class="card-header">🔍 查询其他患者</div>
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="输入患者ID或姓名..."
+                >
+                <button class="btn btn-primary" id="searchBtn">查询</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/patient.js"></script>
+</body>
+</html>

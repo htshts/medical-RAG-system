@@ -1,0 +1,29 @@
+# 医疗RAG系统 - 核心依赖（最小可运行版本）
+
+## 核心框架
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-dotenv==1.0.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+## 工具库
+requests==2.31.0
+python-multipart==0.0.6
+python-jose[cryptography]==3.3.0
+python-dateutil==2.8.2
+regex==2023.10.3
+
+## 日志
+loguru==0.7.2
+
+## 数据库（可选，用于演示）
+# pymysql==1.1.0  # MySQL 客户端（演示时可不用）
+# pymilvus==2.3.3  # Milvus 客户端（演示时可不用）
+# elasticsearch==8.11.0  # Elasticsearch 客户端（演示时可不用）
+# redis==5.0.1  # Redis 客户端（演示时可不用）
+
+## 说明
+# 这是最小依赖集，用于演示后端 API 接口
+# 完整依赖请参考 requirements.txt
+# 演示时，向量检索和关键词检索使用模拟数据

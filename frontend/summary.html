@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成摘要 - 智能病历检索系统</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .summary-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .summary-result {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .summary-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .summary-section-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .summary-text {
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+        
+        .entities-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🏥 智能病历检索系统</h1>
+            <nav class="header-nav">
+                <a href="/">首页</a>
+                <a href="/patient.html">患者查询</a>
+                <a href="/summary.html">生成摘要</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Form Section -->
+        <section class="card summary-form">
+            <div class="card-header">📝 生成转院摘要</div>
+            
+            <div class="alert alert-info hidden" id="infoAlert"></div>
+            <div class="alert alert-error hidden" id="errorAlert"></div>
+            
+            <div class="form-group">
+                <label class="form-label" for="patientIdInput">患者ID *</label>
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    id="patientIdInput" 
+                    placeholder="输入患者ID"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="summaryType">摘要类型</label>
+                <select class="form-input" id="summaryType">
+                    <option value="transfer">转院摘要</option>
+                    <option value="discharge">出院小结</option>
+                    <option value="admission">入院记录</option>
+                    <option value="progress">病程记录</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">包含章节</label>
+                <div class="checkbox-group" id="sectionsCheckboxes">
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="chief_complaint" checked>
+                        主诉
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="history" checked>
+                        现病史
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="examination" checked>
+                        体格检查
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="auxiliary_examination" checked>
+                        辅助检查
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="diagnosis" checked>
+                        诊断
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="treatment" checked>
+                        治疗方案
+                    </label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="timeWindowInput">时间窗口（天）</label>
+                <input 
+                    type="number" 
+                    class="form-input" 
+                    id="timeWindowInput" 
+                    value="30" 
+                    min="1" 
+                    max="365"
+                >
+                <small style="color:var(--text-secondary);margin-top:0.3rem;display:block;">
+                    仅包含最近N天内的就诊记录
+                </small>
+            </div>
+            
+            <div class="form-group">
+                <button class="btn btn-primary" id="generateBtn" style="width:100%;justify-content:center;">
+                    生成摘要
+                </button>
+            </div>
+        </section>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>正在生成摘要，请稍候...</p>
+            <p style="font-size:0.9rem;color:var(--text-secondary);">AI正在分析病历数据</p>
+        </div>
+
+        <!-- Result Section -->
+        <section id="resultSection" class="hidden"></section>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/summary.js"></script>
+</body>
+</html>

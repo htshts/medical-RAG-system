@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能病历检索系统 - 首页</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .suggestion-chip {
+            padding: 0.4rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .suggestion-chip:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .results-container {
+            margin-top: 2rem;
+        }
+        
+        .result-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .time-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.6rem;
+            background: #e8f4fd;
+            color: var(--primary-dark);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🏥 智能病历检索系统</h1>
+            <nav class="header-nav">
+                <a href="/">首页</a>
+                <a href="/patient.html">患者查询</a>
+                <a href="/summary.html">生成摘要</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Search Section -->
+        <section class="card query-input-card">
+            <div class="card-header">🔍 智能检索</div>
+            
+            <div class="alert alert-info hidden" id="infoAlert"></div>
+            <div class="alert alert-error hidden" id="errorAlert"></div>
+            
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="输入查询内容，例如：患者张三在2023年5月的糖尿病就诊记录..."
+                    autocomplete="off"
+                >
+                <button class="btn btn-primary" id="searchBtn">搜索</button>
+            </div>
+            
+            <div class="query-options">
+                <div class="form-group" style="flex:1;">
+                    <label class="form-label" for="patientIdInput">患者ID（可选）</label>
+                    <input 
+                        type="text" 
+                        class="form-input" 
+                        id="patientIdInput" 
+                        placeholder="输入患者ID以缩小检索范围"
+                    >
+                </div>
+                <div class="form-group" style="flex:1;">
+                    <label class="form-label" for="topKInput">返回结果数量</label>
+                    <input 
+                        type="number" 
+                        class="form-input" 
+                        id="topKInput" 
+                        value="10" 
+                        min="1" 
+                        max="50"
+                    >
+                </div>
+                <div class="form-group" style="display:flex;align-items:flex-end;">
+                    <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+                        <input type="checkbox" id="timeAlignCheck" checked>
+                        启用时间语义对齐
+                    </label>
+                </div>
+            </div>
+            
+            <div class="suggestions" id="suggestions"></div>
+        </section>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>正在检索相关病历...</p>
+        </div>
+
+        <!-- Results Section -->
+        <section class="results-container hidden" id="resultsSection">
+            <div class="card-header">
+                检索结果
+                <span style="font-weight:normal;font-size:0.9rem;margin-left:auto;" id="resultCount"></span>
+            </div>
+            
+            <div id="resultsList"></div>
+        </section>
+
+        <!-- Empty State -->
+        <section class="card text-center text-muted hidden" id="emptyState">
+            <p style="font-size:3rem;margin-bottom:1rem;">📋</p>
+            <p>输入查询内容开始检索</p>
+            <p style="font-size:0.9rem;margin-top:0.5rem;">支持自然语言查询和时间语义理解</p>
+        </section>
+    </main>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
